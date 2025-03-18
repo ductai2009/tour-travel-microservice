@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: product-service
+          uri: http://tour-product-service:8080
+          predicates:
+            - Path=/product-service/**
+          filters:
+            - AuthenticationFilter
+
+        - id: order-service
+          uri: http://tour-order-service:8081
+          predicates:
+            - Path=/api-order/**
+          filters:
+            - AuthenticationFilter
+
+        - id: file-service
+          uri: http://tour-file-service:8082
+          predicates:
+            - Path=/file-service/**
+          filters:
+            - AuthenticationFilter
+
+        - id: auth-service
+          uri: http://tour-auth-service:8083
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - AuthenticationFilter
+
+        - id: notification-service
+          uri: http://tour-notification-service:8084
+          predicates:
+            - Path=/notification-service/**
+          filters:
+            - AuthenticationFilter
+
+server:
+  port: 9000
+server-auth:
+  host: http://tour-auth-service:8083
